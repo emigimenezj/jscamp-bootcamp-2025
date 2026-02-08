@@ -1,1 +1,225 @@
-<!-- Aquí el contenido de tu página empleos.html -->
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Estas son las ofertas de trabajo disponibles en DevJobs para desarrolladores."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevJobs - Empleos</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <header>
+      <strong class="">
+        <svg
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        DevJobs
+      </strong>
+
+      <nav aria-label="menú de navegación">
+        <a href="index.html"> Inicio </a>
+        <a href="empleos.html">Empleos</a>
+      </nav>
+
+      <div aria-label="acciones de usuario">
+        <a href="">Publicar un empleo</a>
+        <a href="">Iniciar sesión</a>
+      </div>
+    </header>
+
+    <main class="jobs-container">
+      <section class="jobs-landing">
+        <div>
+          <h1 class="title">Encuentra tu próximo trabajo</h1>
+          <p>Explora miles de oportunidades en el sector tecnológico.</p>
+        </div>
+        <form class="extended" role="search" aria-label="Buscar empleos">
+          <div class="simple with-border">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-search"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+              <path d="M21 21l-6 -6" />
+            </svg>
+
+            <label for="search-input" class="sr-only">Buscar empleos</label>
+            <input
+              id="search-input"
+              required
+              name="q"
+              type="search"
+              placeholder="Buscar trabajos, empresas o habilidades"
+            />
+          </div>
+          <div class="filter-container">
+            <div class="filter-dropdown">
+              <label for="tech-type" class="sr-only">Tecnología</label>
+              <select id="tech-type" name="tech">
+                <option value="">Tecnología</option>
+                <option value="frontend">Frontend</option>
+                <option value="backend">Backend</option>
+                <option value="fullstack">Fullstack</option>
+                <option value="devops">DevOps</option>
+              </select>
+            </div>
+            <div class="filter-dropdown">
+              <label for="location" class="sr-only">Ubicación</label>
+              <select id="location" name="location">
+                <option value="">Ubicación</option>
+                <option value="arg">Argentina</option>
+                <option value="esp">España</option>
+              </select>
+            </div>
+            <div class="filter-dropdown">
+              <label for="contract-type" class="sr-only"
+                >Tipo de contrato</label
+              >
+              <select id="contract-type" name="contract">
+                <option value="">Tipo de contrato</option>
+                <option value="reldep">Relación de dependencia</option>
+                <option value="freelance">Freelance</option>
+              </select>
+            </div>
+            <div class="filter-dropdown">
+              <label for="experience-level" class="sr-only"
+                >Nivel de experiencia</label
+              >
+              <select id="experience-level" name="experience">
+                <option value="">Nivel de experiencia</option>
+                <option value="trainee">Trainee</option>
+                <option value="junior">Junior</option>
+                <option value="senior">Senior</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </section>
+      <section>
+        <h2 class="subtitle">Resultados de búsqueda</h2>
+        <div class="job-offer-container">
+          <article class="job-offer">
+            <div>
+              <div>
+                <h3>Ingeniero de Software</h3>
+                <p>Tech Solutions Inc. | Remoto</p>
+              </div>
+              <button class="apply-job-offer-btn">Aplicar</button>
+            </div>
+            <p>
+              Buscamos un ingeniero de software con experiencia en desarrollo
+              web y conocimientos en JavaScript, React y Node.js. El candidato
+              ideal debe ser capaz de trabajar en equipo y tener buenas
+              habilidades de comunicación.
+            </p>
+          </article>
+          <article class="job-offer">
+            <div>
+              <div>
+                <h3>Analista de Datos</h3>
+                <p>Data Driven Co. | Ciudad de México</p>
+              </div>
+              <button class="apply-job-offer-btn">Aplicar</button>
+            </div>
+            <p>
+              Estamos buscando un analista de datos con experiencia en el manejo
+              de grandes conjuntos de datos y herramientas de visualización. Se
+              requiere conocimiento en SQL, Python y R.
+            </p>
+          </article>
+          <article class="job-offer">
+            <div>
+              <div>
+                <h3>Desarrollador de Aplicaciones Móviles</h3>
+                <p>Mobile Apps Ltd. | Guadalajara</p>
+              </div>
+              <button class="apply-job-offer-btn">Aplicar</button>
+            </div>
+            <p>
+              Buscamos un desarrollador de aplicaciones móviles con experiencia
+              en iOS y/o Android. El candidato debe tener conocimientos en
+              Swift, Kotlin y el desarrollo de interfaces de usuario.
+            </p>
+          </article>
+          <article class="job-offer">
+            <div>
+              <div>
+                <h3>Ingeniero de DevOps</h3>
+                <p>Cloud Services SA | Remoto</p>
+              </div>
+              <button class="apply-job-offer-btn">Aplicar</button>
+            </div>
+            <p>
+              Estamos buscando un ingeniero de DevOps con experiencia en la
+              gestión de infraestructuras en la nube, automatización de procesos
+              y herramientas de integración continua. Se requiere conocimiento
+              en AWS, Azure o GCP.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Paginación -->
+      <nav class="pagination" aria-label="Paginación de resultados">
+        <a class="pagination-btn" href="#" aria-label="Página anterior">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </a>
+
+        <span class="current-page pagination-btn" aria-current="page">1</span>
+        <a class="pagination-btn" href="#">2</a>
+        <a class="pagination-btn" href="#">3</a>
+        <a class="pagination-btn" href="#">4</a>
+        <a class="pagination-btn" href="#">5</a>
+
+        <a class="pagination-btn" href="#" aria-label="Página siguiente">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </a>
+      </nav>
+    </main>
+    <footer>
+      <small>&copy; 2025 DevJobs. Todos los derechos reservados.</small>
+    </footer>
+  </body>
+</html>
