@@ -72,7 +72,8 @@ export function SearchFormSection(props) {
       <h1>Encuentra tu próximo trabajo</h1>
       <p>Explora miles de oportunidades en el sector tecnológico.</p>
 
-      <form ref={formRef} id="empleos-search-form" role="search">
+      {/* Evitamos que el formulario se envíe y recargue la página, además de no agregar params a la URL */}
+      <form onSubmit={(e) => e.preventDefault()} ref={formRef} id="empleos-search-form" role="search">
         <div className="search-bar">
           <svg
             xmlns="http://www.w3.org/2000/svg"
