@@ -60,11 +60,12 @@ export function SearchFormSection(props) {
     onFilterModelChange(initialFilterModel);
   };
 
+  /* No hace falta transformar a boolean, la expresión ya devuelve un valor truthy/falsy */
   const hasActiveFilters =
-    Boolean(searchDraft?.trim()) ||
-    Boolean(filterModel.technology) ||
-    Boolean(filterModel.location) ||
-    Boolean(filterModel.experienceLevel);
+    searchDraft?.trim() ||
+    filterModel.technology ||
+    filterModel.location ||
+    filterModel.experienceLevel;
 
   return (
     <section className="jobs-search">
