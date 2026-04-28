@@ -13,7 +13,7 @@
 
   <body>
     <header>
-      <strong class="">
+      <strong>
         <svg
           fill="none"
           stroke="currentColor"
@@ -31,7 +31,9 @@
 
       <nav aria-label="menú de navegación">
         <a href="index.html"> Inicio </a>
-        <a href="empleos.html">Empleos</a>
+        <!-- Hola! Podemos usar aria-current="page" para indicar la página actual. En este caso, como estamos en `empleos.html`, el link a "Empleos" debe tener aria-current="page" -->
+        <!-- Esto sirve poder estilar el link con CSS, o por accesibilidad, indicando a los lectores de pantalla que está en la página actual -->
+        <a href="empleos.html" aria-current="page">Empleos</a>
       </nav>
 
       <div aria-label="acciones de usuario">
@@ -48,12 +50,15 @@
         </div>
         <form class="extended" role="search" aria-label="Buscar empleos">
           <div class="simple with-border">
+            <!-- Para elementos decorativos, es recomendable usar aria-hidden="true". No es necesario, pero lo puse como recurso si?
+             La idea es que al poner aria-hidden, los lectores de pantalla ignorarán ese elemento, haciendo que sea más limpio para el usuario la navegación por herramientas de accesibilidad. Si el elemento tiene importancia  -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
               viewBox="0 0 24 24"
               fill="none"
+              aria-hidden="true"
               stroke="currentColor"
               stroke-width="1"
               stroke-linecap="round"
@@ -65,6 +70,7 @@
               <path d="M21 21l-6 -6" />
             </svg>
 
+            <!-- Excelente uso de sr-only! -->
             <label for="search-input" class="sr-only">Buscar empleos</label>
             <input
               id="search-input"
@@ -103,17 +109,16 @@
                 <option value="freelance">Freelance</option>
               </select>
             </div>
-            <div class="filter-dropdown">
-              <label for="experience-level" class="sr-only"
-                >Nivel de experiencia</label
-              >
-              <select id="experience-level" name="experience">
+            <!-- Otra alternativa es hacer sustituir el div por el label, y que el select quede dentro del label. De esta manera podemos evitar vincular ambos elementos con el atributo for/id. Ambas están bien! Es para mostrar otra forma de hacerlo :) -->
+            <label class="filter-dropdown">
+              <span class="sr-only">Nivel de experiencia</span>
+              <select name="experience">
                 <option value="">Nivel de experiencia</option>
                 <option value="trainee">Trainee</option>
                 <option value="junior">Junior</option>
                 <option value="senior">Senior</option>
               </select>
-            </div>
+            </label>
           </div>
         </form>
       </section>
@@ -124,7 +129,8 @@
             <div>
               <div>
                 <h3>Ingeniero de Software</h3>
-                <p>Tech Solutions Inc. | Remoto</p>
+                <!-- Un `p` está excelente! Una alternativa es usar un `small`. Esta etiqueta se usa para texto secundario o metadatos: la empresa y la ubicación se puede interpretar como información secundaria de la propuesta. -->
+                <small>Tech Solutions Inc. | Remoto</small>
               </div>
               <button class="apply-job-offer-btn">Aplicar</button>
             </div>
