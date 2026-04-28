@@ -4,6 +4,7 @@ let currentToast = null;
 
 function showToast(message) {
   if (currentToast) {
+    /* Excelente uso de timeoutId */
     clearTimeout(currentToast.timeoutId);
     currentToast.element.remove();
     currentToast = null;
