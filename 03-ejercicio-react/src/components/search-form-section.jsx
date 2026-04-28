@@ -60,18 +60,20 @@ export function SearchFormSection(props) {
     onFilterModelChange(initialFilterModel);
   };
 
+  /* No hace falta transformar a boolean, la expresión ya devuelve un valor truthy/falsy */
   const hasActiveFilters =
-    Boolean(searchDraft?.trim()) ||
-    Boolean(filterModel.technology) ||
-    Boolean(filterModel.location) ||
-    Boolean(filterModel.experienceLevel);
+    searchDraft?.trim() ||
+    filterModel.technology ||
+    filterModel.location ||
+    filterModel.experienceLevel;
 
   return (
     <section className="jobs-search">
       <h1>Encuentra tu próximo trabajo</h1>
       <p>Explora miles de oportunidades en el sector tecnológico.</p>
 
-      <form ref={formRef} id="empleos-search-form" role="search">
+      {/* Evitamos que el formulario se envíe y recargue la página, además de no agregar params a la URL */}
+      <form onSubmit={(e) => e.preventDefault()} ref={formRef} id="empleos-search-form" role="search">
         <div className="search-bar">
           <svg
             xmlns="http://www.w3.org/2000/svg"

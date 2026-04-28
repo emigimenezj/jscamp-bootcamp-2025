@@ -6,11 +6,61 @@ import { PageSizeSelector } from "../components/page-size-selector";
 import { Pagination } from "../components/pagination";
 import { Footer } from "../components/footer";
 import { JobListings } from "../components/job-listings";
+import { useRouter } from "../hooks/use-router";
+
+const initialPaginationModel = {
+  currentPage: 1,
+  resultsPerPage: 2,
+};
+
+const initialFilterModel = {
+  search: "",
+  technology: "",
+  location: "",
+  experienceLevel: "",
+};
+
+/* Ojo con este nombre, puede parecer que extrae cualquier valor de la URL, pero el fallback es un número. Podemos cambiar la lógica o el nombre para que sea más claro. Lo que te propongo (no es la única manera si? Solo es una opción) es crear una función que extraiga todos los parámetros de la URL y los devuelva con su nombre */
+const getIntParams = () => {
+  const params = new URLSearchParams(window.location.search)
+
+  const pageNum = Number(params.get('page'))
+  const pageSizeNum = Number(params.get('pageSize'))
+
+  return {
+    page: Number.isNaN(pageNum) || pageNum < 1 ? 1 : pageNum,
+    pageSize: Number.isNaN(pageSizeNum) || pageSizeNum < 1 ? 2 : pageSizeNum,
+    search: params.get("search") ?? initialFilterModel.search,
+    technology: params.get("technology") ?? initialFilterModel.technology,
+    location: params.get("location") ?? initialFilterModel.location,
+    experienceLevel: params.get("experienceLevel") ?? initialFilterModel.experienceLevel,
+  }
+}
+
+/* Todas las funciones de utilidad las estoy sacando fuera del componente para que se pueda leer mejor el mismo. */
+const low = (str) => str.toLowerCase().trim();
+const compare = (s1, s2) => low(s1) === low(s2);
+const incl = (s1, s2) => low(s1).includes(low(s2));
+
+/* const extractIntFromURL = (key, fallback) => {
+  const params = new URLSearchParams(window.location.search);
+  const value = parseInt(params.get(key), 10);
+  return isNaN(value) || value < 1 ? fallback : value;
+}; */
 
 const useFilters = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { currentPath } = useRouter()
 
+  /* Extraemos los parámetros de la URL */
+  const {page, pageSize, ...filterParams} = getIntParams()
+
+  const [currentPage, setCurrentPage] = useState(() => page);
+  const [resultsPerPage, setResultsPerPage] = useState(() => pageSize);
+  const [filterModel, setFilterModel] = useState(() => ({...filterParams}));
+
+  /* Use effect por convención va después de la declaración de estados */
   useEffect(() => {
     async function fetchJobs() {
       try {
@@ -27,50 +77,14 @@ const useFilters = () => {
     fetchJobs();
   }, []);
 
-  const initialPaginationModel = {
-    currentPage: 1,
-    resultsPerPage: 2,
-  };
-  const initialFilterModel = {
-    search: "",
-    technology: "",
-    location: "",
-    experienceLevel: "",
-  };
-
-  const extractIntFromURL = (key, fallback) => {
-    const params = new URLSearchParams(window.location.search);
-    const value = parseInt(params.get(key), 10);
-    return isNaN(value) || value < 1 ? fallback : value;
-  };
-  const [currentPage, setCurrentPage] = useState(() =>
-    extractIntFromURL("page", initialPaginationModel.currentPage),
-  );
-  const [resultsPerPage, setResultsPerPage] = useState(() =>
-    extractIntFromURL("pageSize", initialPaginationModel.resultsPerPage),
-  );
-  const [filterModel, setFilterModel] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return {
-      search: params.get("search") ?? initialFilterModel.search,
-      technology: params.get("technology") ?? initialFilterModel.technology,
-      location: params.get("location") ?? initialFilterModel.location,
-      experienceLevel:
-        params.get("experienceLevel") ?? initialFilterModel.experienceLevel,
-    };
-  });
-
-  const changeAndReset = (setter) => (value) => {
+  /* Muy bien pensado para simplificar, cambie el nombre para que quedase mas claro lo que hace sin tener que ver la función */
+  const changeStateAndResetPage = (setter) => (value) => {
     setter(value);
     setCurrentPage(1);
   };
 
-  const handlePageSizeChange = changeAndReset(setResultsPerPage);
-  const handleFiltersChange = changeAndReset(setFilterModel);
-
-  const low = (str) => str.toLowerCase().trim();
-  const compare = (s1, s2) => low(s1) === low(s2);
-  const incl = (s1, s2) => low(s1).includes(low(s2));
+  const handlePageSizeChange = changeStateAndResetPage(setResultsPerPage);
+  const handleFiltersChange = changeStateAndResetPage(setFilterModel);
 
   const byUserCriteria = (job) => {
     const hasActiveFilters = Object.values(filterModel).some(Boolean);
@@ -108,32 +122,33 @@ const useFilters = () => {
 
   useEffect(() => {
     const params = new URLSearchParams();
-    if (filterModel.search)
-      params.set("search", filterModel.search.trim().toLowerCase());
-    if (filterModel.technology)
-      params.set("technology", filterModel.technology.trim().toLowerCase());
-    if (filterModel.location)
-      params.set("location", filterModel.location.trim().toLowerCase());
-    if (filterModel.experienceLevel)
-      params.set(
-        "experienceLevel",
-        filterModel.experienceLevel.trim().toLowerCase(),
-      );
+
+    const setValueInParamsIfExist = (key, value) => {
+      if (value) params.set(key, value.trim().toLowerCase());
+    };
+
+    /* Podemos hacer esta función para simplificar la lectura del código */
+    setValueInParamsIfExist("search", filterModel.search);
+    setValueInParamsIfExist("technology", filterModel.technology);
+    setValueInParamsIfExist("location", filterModel.location);
+    setValueInParamsIfExist("experienceLevel", filterModel.experienceLevel);
+
+    
     if (currentPage !== initialPaginationModel.currentPage)
       params.set("page", currentPage);
     if (resultsPerPage !== initialPaginationModel.resultsPerPage)
       params.set("pageSize", resultsPerPage);
 
-    const queryString = params.toString();
-    const newURL =
-      window.location.pathname + (queryString ? `?${queryString}` : "");
+    const queryString = params.toString() ?? '';
+    const newURL = currentPath + queryString;
     window.history.pushState({}, "", newURL);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, resultsPerPage, filterModel]);
+     
+  }, [currentPage, resultsPerPage, filterModel, currentPath]);
 
   const firstPageJobIDX = (currentPage - 1) * resultsPerPage;
   const lastPageJobIDX = currentPage * resultsPerPage;
 
+  /* Genial! Recuerda que la API también tiene la posibilidad de pasarle los filtros por query params. De esta manera no tenes que hacerlo tú */
   const filteredJobs = jobs.filter(byUserCriteria);
   const currentPageJobs = filteredJobs.slice(firstPageJobIDX, lastPageJobIDX);
 
