@@ -1,10 +1,10 @@
-import { Link } from './Link'
+import { Link } from "./Link";
 
 export function Header() {
   return (
     <header>
-      <Link href="/" style={{ textDecoration: 'none' }}>
-        <h1 style={{ color: 'white' }}>
+      <Link href="/" style={{ textDecoration: "none" }}>
+        <h1 style={{ color: "white" }}>
           <svg
             fill="none"
             stroke="currentColor"
@@ -27,5 +27,5 @@ export function Header() {
         <a href="/search">Sin SPA</a>
       </nav>
     </header>
-  )
+  );
 }

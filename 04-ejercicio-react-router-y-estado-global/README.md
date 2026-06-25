@@ -140,13 +140,13 @@ Estas dos acciones lo que hacen es cambiar el valor de `isLoggedIn` a `true` o `
 **💡 Ejemplo de estructura:**
 
 ```js
-import { create } from 'zustand'
+import { create } from "zustand";
 
 export const useAuthStore = create((set) => ({
   isLoggedIn: false,
   login: () => set({ isLoggedIn: true }),
   logout: () => set({ isLoggedIn: false }),
-}))
+}));
 ```
 
 ### Tarea 2: Store de favoritos
