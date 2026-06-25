@@ -16,9 +16,9 @@ export function HomePage() {
   };
 
   return (
-    <main>
-      <section>
-        <img src="./background.webp" width="200" />
+    <>
+      <section className="home-hero">
+        <img src="/background.webp" width="200" alt="" />
 
         <h1>Encuentra el trabajo de tus sueños</h1>
 
@@ -56,7 +56,7 @@ export function HomePage() {
         </form>
       </section>
 
-      <section>
+      <section className="home-features">
         <header>
           <h2>¿Por qué DevJobs?</h2>
           <p>
@@ -66,7 +66,7 @@ export function HomePage() {
           </p>
         </header>
 
-        <footer>
+        <div className="features-grid">
           <article>
             <svg
               fill="currentColor"
@@ -114,8 +114,8 @@ export function HomePage() {
               Obtén el salario que mereces con nuestra calculadora de salarios.
             </p>
           </article>
-        </footer>
+        </div>
       </section>
-    </main>
+    </>
   );
 }

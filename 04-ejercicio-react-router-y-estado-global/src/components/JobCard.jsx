@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "./Link.jsx";
 
 export function JobCard({ job }) {
   const [isApplied, setIsApplied] = useState(false);
@@ -26,9 +27,14 @@ export function JobCard({ job }) {
         </small>
         <p>{job.descripcion}</p>
       </div>
-      <button className={buttonClasses} onClick={handleApplyClick}>
-        {buttonText}
-      </button>
+      <div className="job-listing-actions">
+        <button className={buttonClasses} onClick={handleApplyClick}>
+          {buttonText}
+        </button>
+        <Link className="job-detail-link" href={`/job/${job.id}`}>
+          Ver detalle
+        </Link>
+      </div>
     </article>
   );
 }

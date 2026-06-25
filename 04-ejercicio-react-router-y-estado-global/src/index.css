@@ -141,7 +141,11 @@ header div a {
 }
 
 /* Hero */
-main > section:nth-child(1) {
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: -1.75rem calc(50% - 50vw) 0;
   height: 500px;
   text-align: center;
   display: flex;
@@ -241,15 +245,17 @@ button {
   }
 }
 
-/* Features Section */
-main > section:nth-child(2) {
-  padding-inline: 1rem;
+.home-features {
   background-color: var(--background);
-  padding-top: 2rem;
+  padding-top: 3rem;
 
   & > header {
+    padding: 0;
+    border-bottom: 0;
+    background: transparent;
     gap: 2px;
     flex-direction: column;
+    text-align: center;
 
     h2 {
       margin-bottom: 0;
@@ -266,14 +272,14 @@ main > section:nth-child(2) {
   }
 }
 
-main > section:nth-child(2) h2 {
+.home-features h2 {
   font-size: 1.875rem;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
-main > section:nth-child(2) > div > div:first-child > p {
+.home-features > header > p {
   font-size: 1.125rem;
   color: var(--text-muted);
   max-width: 42rem;
@@ -281,10 +287,11 @@ main > section:nth-child(2) > div > div:first-child > p {
 }
 
 /* Grid de Features */
-main > section:nth-child(2) footer {
+.features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
+  margin-top: 2rem;
 }
 
 /* Feature Cards */
@@ -354,7 +361,7 @@ article {
 /* Jobs Search */
 .jobs-search {
   margin: 0;
-  padding: 0;
+  padding: 1rem 0 2rem;
   height: auto !important;
 
   h1 {
@@ -392,6 +399,18 @@ article {
   }
 }
 
+.search-results {
+  margin-top: 1rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    font-size: 1.875rem;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
 .jobs-listings {
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
@@ -406,6 +425,10 @@ article {
     display: flex; /* valor original */
     align-items: start;
     gap: 1rem;
+
+    > div:first-child {
+      flex: 1;
+    }
 
     &.is-hidden {
       display: none;
@@ -426,11 +449,37 @@ article {
   }
 }
 
+.job-listing-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.job-detail-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    color: var(--primary-light);
+    outline: none;
+  }
+}
+
 .button-apply-job {
   background: #09f;
 
   &.is-applied {
     background: #4caf50;
     pointer-events: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-hero {
+    margin-top: -1.25rem;
   }
 }

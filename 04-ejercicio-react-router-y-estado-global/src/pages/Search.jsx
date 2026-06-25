@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Pagination } from "../components/Pagination.jsx";
 import { SearchFormSection } from "../components/SearchFormSection.jsx";
 import { JobListings } from "../components/JobListings.jsx";
 import { useRouter } from "../hooks/useRouter.jsx";
+import { useService } from "../hooks/useService.jsx";
+import { fetchJobs } from "../service/jobs.js";
 
 const RESULTS_PER_PAGE = 4;
 
@@ -26,46 +28,28 @@ const useFilters = () => {
     return Number.isNaN(page) ? page : 1;
   });
 
-  const [jobs, setJobs] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-
   const { navigateTo } = useRouter();
 
-  useEffect(() => {
-    async function fetchJobs() {
-      try {
-        setLoading(true);
+  const queryParams = useMemo(() => {
+    const params = new URLSearchParams();
+    if (textToFilter) params.append("text", textToFilter);
+    if (filters.technology) params.append("technology", filters.technology);
+    if (filters.location) params.append("type", filters.location);
+    if (filters.experienceLevel) params.append("level", filters.experienceLevel);
 
-        const params = new URLSearchParams();
-        if (textToFilter) params.append("text", textToFilter);
-        if (filters.technology) params.append("technology", filters.technology);
-        if (filters.location) params.append("type", filters.location);
-        if (filters.experienceLevel)
-          params.append("level", filters.experienceLevel);
+    const offset = (currentPage - 1) * RESULTS_PER_PAGE;
+    params.append("limit", RESULTS_PER_PAGE);
+    params.append("offset", offset);
 
-        const offset = (currentPage - 1) * RESULTS_PER_PAGE;
-        params.append("limit", RESULTS_PER_PAGE);
-        params.append("offset", offset);
-
-        const queryParams = params.toString();
-
-        const response = await fetch(
-          `https://jscamp-api.vercel.app/api/jobs?${queryParams}`,
-        );
-        const json = await response.json();
-
-        setJobs(json.data);
-        setTotal(json.total);
-      } catch (error) {
-        console.error("Error fetching jobs:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchJobs();
+    return params.toString();
   }, [filters, currentPage, textToFilter]);
+
+  const loadJobs = useCallback(() => fetchJobs(queryParams), [queryParams]);
+
+  const { data, loading, error } = useService(loadJobs);
+
+  const jobs = data?.data ?? [];
+  const total = data?.total ?? 0;
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -103,6 +87,7 @@ const useFilters = () => {
 
   return {
     loading,
+    error,
     jobs,
     total,
     totalPages,
@@ -119,6 +104,7 @@ export function SearchPage() {
     jobs,
     total,
     loading,
+    error,
     totalPages,
     currentPage,
     textToFilter,
@@ -132,7 +118,7 @@ export function SearchPage() {
     : `Resultados: ${total}, Página ${currentPage} - DevJobs`;
 
   return (
-    <main>
+    <>
       <title>{title}</title>
       <meta
         name="description"
@@ -145,16 +131,22 @@ export function SearchPage() {
         onTextFilter={handleTextFilter}
       />
 
-      <section>
-        <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
+      <section className="search-results">
+        <h2>Resultados de búsqueda</h2>
 
-        {loading ? <p>Cargando empleos...</p> : <JobListings jobs={jobs} />}
+        {error ? (
+          <p>No se pudieron cargar los empleos.</p>
+        ) : loading ? (
+          <p>Cargando empleos...</p>
+        ) : (
+          <JobListings jobs={jobs} />
+        )}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
       </section>
-    </main>
+    </>
   );
 }
