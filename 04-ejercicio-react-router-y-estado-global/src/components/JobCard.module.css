@@ -25,6 +25,15 @@
     transform 0.2s ease;
 }
 
+.favoriteIcon {
+  position: relative;
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+
 .favoriteButton svg {
   width: 1.15rem;
   height: 1.15rem;
@@ -36,16 +45,79 @@
   transition: transform 0.2s ease;
 }
 
+.celebration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.celebration i {
+  --burst-x: 0;
+  --burst-y: -1.5rem;
+
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 0.22rem;
+  height: 0.22rem;
+  border-radius: 50%;
+  background: #f87171;
+  opacity: 0;
+}
+
+.celebration i:nth-child(1) {
+  --burst-x: -1.15rem;
+  --burst-y: -1.35rem;
+}
+
+.celebration i:nth-child(2) {
+  --burst-x: -0.6rem;
+  --burst-y: -1.85rem;
+
+  width: 0.16rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #fbbf24;
+  rotate: -20deg;
+}
+
+.celebration i:nth-child(3) {
+  --burst-x: 0;
+  --burst-y: -1.55rem;
+
+  background: var(--primary-light);
+}
+
+.celebration i:nth-child(4) {
+  --burst-x: 0.6rem;
+  --burst-y: -1.9rem;
+
+  width: 0.16rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #fbbf24;
+  rotate: 20deg;
+}
+
+.celebration i:nth-child(5) {
+  --burst-x: 1.15rem;
+  --burst-y: -1.3rem;
+}
+
+.celebration i:nth-child(6) {
+  --burst-x: 0.9rem;
+  --burst-y: -0.75rem;
+
+  width: 0.18rem;
+  height: 0.18rem;
+  background: var(--primary-light);
+}
+
 .favoriteButton:hover {
   border-color: rgba(0, 153, 255, 0.6);
   background: rgba(0, 153, 255, 0.12);
   color: var(--primary-light);
   outline: none;
-  transform: translateY(-1px);
-}
-
-.favoriteButton:hover svg {
-  transform: scale(1.08);
 }
 
 .favoriteButton:focus-visible {
@@ -70,10 +142,58 @@
   color: var(--primary-light);
 }
 
+.favoriteButton.isFavorite svg {
+  animation: heart-pop 0.45s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+
+.favoriteButton.isFavorite .celebration i {
+  animation: favorite-celebration 0.65s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+.favoriteButton.isFavorite .celebration i:nth-child(even) {
+  animation-delay: 0.04s;
+}
+
+@keyframes heart-pop {
+  0% {
+    transform: scale(0.7);
+  }
+
+  55% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes favorite-celebration {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--burst-x), var(--burst-y))
+      scale(0.9);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card,
   .favoriteButton,
   .favoriteButton svg {
     transition: none;
+  }
+
+  .favoriteButton.isFavorite svg,
+  .favoriteButton.isFavorite .celebration i {
+    animation: none;
   }
 }

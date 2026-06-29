@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { useFavoritesStore } from "../store/favoritesStore.js";
 import { Link } from "./Link.jsx";
 import styles from "./JobCard.module.css";
 
 export function JobCard({ job }) {
   const [isApplied, setIsApplied] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const isFavorite = useFavoritesStore((state) => state.isFavorite(job.id));
+  const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
 
   const handleApplyClick = () => {
     setIsApplied(true);
   };
 
   const handleFavoriteClick = () => {
-    setIsFavorite((currentFavorite) => !currentFavorite);
+    toggleFavorite(job.id);
   };
 
   const buttonClasses = isApplied
@@ -71,18 +73,28 @@ export function JobCard({ job }) {
 
 function FavoriteIcon({ isFavorite }) {
   return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill={isFavorite ? "currentColor" : "none"}
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" />
-    </svg>
+    <span className={styles.favoriteIcon} aria-hidden="true">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill={isFavorite ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" />
+      </svg>
+
+      <span className={styles.celebration}>
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </span>
+    </span>
   );
 }
