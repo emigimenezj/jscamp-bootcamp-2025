@@ -11,6 +11,61 @@
   flex: 1;
 }
 
+.loaderContainer {
+  min-height: 60vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.loaderContainer p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.loader {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+}
+
+.loader span {
+  position: absolute;
+  inset: 0;
+  border: 3px solid transparent;
+  border-top-color: var(--primary-light);
+  border-radius: 50%;
+  animation: spin 1.15s linear infinite;
+}
+
+.loader span:nth-child(2) {
+  inset: 0.5rem;
+  border-top-color: var(--text-primary);
+  animation-duration: 0.9s;
+  animation-direction: reverse;
+}
+
+.loader span:nth-child(3) {
+  inset: 1rem;
+  border-top-color: var(--primary-hover);
+  animation-duration: 0.7s;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader span {
+    animation-duration: 2.5s;
+  }
+}
+
 @media (max-width: 760px) {
   .container {
     padding: 1.25rem 1rem 3rem;

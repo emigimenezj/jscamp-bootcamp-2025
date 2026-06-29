@@ -1,11 +1,12 @@
 import { MainLayout } from "./components/MainLayout.jsx";
 
-import { HomePage } from "./pages/Home.jsx";
-import { SearchPage } from "./pages/Search.jsx";
-import { DetailPage } from "./pages/Detail.jsx";
-import { NotFoundPage } from "./pages/404.jsx";
-
 import { Routes, Route } from "react-router";
+import { lazy } from "react";
+
+const HomePage = lazy(() => import("./pages/Home.jsx"));
+const SearchPage = lazy(() => import("./pages/Search.jsx"));
+const DetailPage = lazy(() => import("./pages/Detail.jsx"));
+const NotFoundPage = lazy(() => import("./pages/404.jsx"));
 
 function App() {
   return (

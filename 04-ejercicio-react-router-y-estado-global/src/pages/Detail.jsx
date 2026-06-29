@@ -6,7 +6,7 @@ import { useService } from "../hooks/useService.jsx";
 import { fetchJob } from "../service/jobs.js";
 import styles from "./detail.module.css";
 
-export function DetailPage() {
+export default function DetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isApplied, setIsApplied] = useState(false);
