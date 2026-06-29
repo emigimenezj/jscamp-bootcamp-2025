@@ -1,41 +1,39 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router";
 
 import { Pagination } from "../components/Pagination.jsx";
 import { SearchFormSection } from "../components/SearchFormSection.jsx";
 import { JobListings } from "../components/JobListings.jsx";
-import { useRouter } from "../hooks/useRouter.jsx";
 import { useService } from "../hooks/useService.jsx";
 import { fetchJobs } from "../service/jobs.js";
 
 const RESULTS_PER_PAGE = 4;
 
 const useFilters = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [filters, setFilters] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
     return {
-      technology: params.get("technology") || "",
-      location: params.get("type") || "",
-      experienceLevel: params.get("level") || "",
+      technology: searchParams.get("technology") ?? "",
+      location: searchParams.get("type") ?? "",
+      experienceLevel: searchParams.get("level") ?? "",
     };
   });
-  const [textToFilter, setTextToFilter] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("text") || "";
-  });
+  const [textToFilter, setTextToFilter] = useState(
+    () => searchParams.get("text") ?? "",
+  );
   const [currentPage, setCurrentPage] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    const page = Number(params.get("page"));
-    return Number.isNaN(page) ? page : 1;
+    const page = Number(searchParams.get("page"));
+    return Number.isInteger(page) && page > 0 ? page : 1;
   });
-
-  const { navigateTo } = useRouter();
 
   const queryParams = useMemo(() => {
     const params = new URLSearchParams();
     if (textToFilter) params.append("text", textToFilter);
     if (filters.technology) params.append("technology", filters.technology);
     if (filters.location) params.append("type", filters.location);
-    if (filters.experienceLevel) params.append("level", filters.experienceLevel);
+    if (filters.experienceLevel)
+      params.append("level", filters.experienceLevel);
 
     const offset = (currentPage - 1) * RESULTS_PER_PAGE;
     params.append("limit", RESULTS_PER_PAGE);
@@ -52,22 +50,19 @@ const useFilters = () => {
   const total = data?.total ?? 0;
 
   useEffect(() => {
-    const params = new URLSearchParams();
+    setSearchParams((params) => {
+      const setOrDelete = (key, value) =>
+        value ? params.set(key, value) : params.delete(key);
 
-    if (textToFilter) params.append("text", textToFilter);
-    if (filters.technology) params.append("technology", filters.technology);
-    if (filters.location) params.append("type", filters.location);
-    if (filters.experienceLevel)
-      params.append("level", filters.experienceLevel);
+      setOrDelete("text", textToFilter);
+      setOrDelete("technology", filters.technology);
+      setOrDelete("type", filters.location);
+      setOrDelete("level", filters.experienceLevel);
+      setOrDelete("page", currentPage > 1 ? currentPage : "");
 
-    if (currentPage > 1) params.append("page", currentPage);
-
-    const newUrl = params.toString()
-      ? `${window.location.pathname}?${params.toString()}`
-      : window.location.pathname;
-
-    navigateTo(newUrl);
-  }, [filters, currentPage, textToFilter, navigateTo]);
+      return params;
+    });
+  }, [filters, currentPage, textToFilter, setSearchParams]);
 
   const totalPages = Math.ceil(total / RESULTS_PER_PAGE);
 
