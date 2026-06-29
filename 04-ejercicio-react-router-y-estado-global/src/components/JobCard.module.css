@@ -1,0 +1,79 @@
+.card {
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.favoriteButton {
+  /* width: 100%; */
+  min-width: 11rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(0, 153, 255, 0.25);
+  background: rgba(0, 153, 255, 0.05);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.favoriteButton svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #f87171;
+  transition: transform 0.2s ease;
+}
+
+.favoriteButton:hover {
+  border-color: rgba(0, 153, 255, 0.6);
+  background: rgba(0, 153, 255, 0.12);
+  color: var(--primary-light);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.favoriteButton:hover svg {
+  transform: scale(1.08);
+}
+
+.favoriteButton:focus-visible {
+  outline: 2px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
+.favoriteButton:active {
+  transform: translateY(0);
+}
+
+.favoriteButton.isFavorite {
+  border-color: rgba(0, 153, 255, 0.55);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 153, 255, 0.2),
+    rgba(13, 91, 168, 0.1)
+  );
+  box-shadow:
+    inset 0 0 1rem rgba(0, 153, 255, 0.06),
+    0 0 1rem rgba(0, 153, 255, 0.12);
+  color: var(--primary-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .favoriteButton,
+  .favoriteButton svg {
+    transition: none;
+  }
+}

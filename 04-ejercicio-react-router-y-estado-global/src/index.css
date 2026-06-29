@@ -482,4 +482,17 @@ article {
   .home-hero {
     margin-top: -1.25rem;
   }
+
+  .jobs-listings .job-listing-card {
+    flex-direction: column;
+  }
+
+  .job-listing-actions {
+    width: 100%;
+  }
+
+  .job-listing-actions > * {
+    width: 100%;
+    text-align: center;
+  }
 }
