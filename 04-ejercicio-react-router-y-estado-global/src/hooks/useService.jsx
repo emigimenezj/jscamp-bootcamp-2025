@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+/* Excelente! Esto con TypeScript sería poderoso */
 export function useService(service) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
