@@ -1,0 +1,21 @@
+{
+  "name": "05-ejercicio-cli-con-node",
+  "version": "0.0.1",
+  "main": "./src/cli.js",
+  "type": "module",
+  "author": "emigimenezj",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./src/cli.js",
+    "dev": "node --watch ./src/cli.js",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.6.0",
+    "globals": "17.7.0"
+  },
+  "dependencies": {
+    "ms": "2.1.3"
+  }
+}
