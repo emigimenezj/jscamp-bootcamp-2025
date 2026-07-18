@@ -7,7 +7,9 @@ export function HomePage() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const search = `${formData.get("search") ?? ""}`.trim();
+    // No hace falta hacer un .trim() de "", podemos simplificarlo haciendo esto:
+    const search = formData.get("search")?.trim() ?? "";
+    // const search = `${formData.get("search") ?? ""}`.trim();
 
     const params = new URLSearchParams();
     if (search) params.set("search", search);
