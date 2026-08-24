@@ -1,11 +1,16 @@
-import { createServer } from "node:http";
 import { json } from "node:stream/consumers";
 
-import { handler } from "./src/handler.js";
+import { randomUUID } from "node:crypto"; // Es buena practica importarlo del módulo en el que sabemos que existe. Si usamos solo `crypyo.randomUUID` corremos riesgo de que no sea de `node:crypto` si usamos otras librerías
 import { users } from "./db/user.js";
+import { handler } from "./src/handler.js";
 
-process.loadEnvFile();
-const port = process.env.PORT || 3000;
+/* Muy bien, pero si no tenemos un .env en el directorio dará error y no continuará el flujo de trabajo. Lo agregamos en un try/catch y solucionado */
+let port = 3000
+try {
+  process.loadEnvFile();
+  port = process.env.PORT || port
+} catch {}
+// const port = process.env.PORT || 3000;
 
 handler.start(port);
 
@@ -17,12 +22,36 @@ handler.get("/users", (req, res) => {
   const { limit, offset } = queryParameters;
   const { minAge, maxAge } = queryParameters;
 
+  /* Buenísimo, antes de utilizar los valores de las searchParams, estaría bueno hacer validaciones: */
+  const safeName = name ? name.toLowerCase() : "";
+
+  const limitValue = Number(limit);
+  const offsetValue = Number(offset);
+
+  
+  /* Con `isInteger` evitamos que pasen `NaN`, `Infinity`, `-Infinity` y/o números decimales. También evitamos que se pase un número negativo */
+  const safeLimit = Number.isInteger(limitValue) && limitValue >= 0
+    ? limitValue
+    : Infinity;
+
+  const safeOffset = Number.isInteger(offsetValue) && offsetValue >= 0
+    ? offsetValue
+    : 0;
+
+  const safeMinAge = Number.isInteger(minAge) && minAge >= 0
+    ? minAge
+    : 0;
+
+  const safeMaxAge = Number.isInteger(maxAge) && maxAge >= 0
+    ? maxAge
+    : Infinity;
+
   const filters = {
-    name,
-    limit: limit ? Number(limit) : Infinity,
-    offset: offset ? Number(offset) : 0,
-    minAge: minAge ? Number(minAge) : 0,
-    maxAge: maxAge ? Number(maxAge) : Infinity,
+    name: safeName,
+    limit: safeLimit,
+    offset: safeOffset,
+    minAge: safeMinAge,
+    maxAge: safeMaxAge,
   };
 
   const compare = (str1, str2) =>
@@ -40,14 +69,23 @@ handler.get("/users", (req, res) => {
 });
 
 handler.post("/users", async (req, res) => {
-  const body = await json(req);
+  /* Podemos hacer esto un poco más robusto: */
+  try {
+    const body = await json(req);
 
-  const newUser = {
-    id: crypto.randomUUID(),
-    name: body.name,
-    age: body.age,
-  };
+    const newUser = {
+      id: randomUUID(),
+      name: body.name,
+      age: body.age,
+    };
 
+    users.push(newUser);
+    res.status(201).json(newUser);
+  } catch {
+    res.status(400).json({
+      error: "El body debe contener un JSON válido",
+    });
+  }
   users.push(newUser);
   res.status(201).json(newUser);
 });
