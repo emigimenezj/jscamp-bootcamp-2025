@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 
 const routes = [];
 
+/* Me encantó! Muy bien pensado */
 export function handler(req, res) {
   const response = {
     raw: res,
