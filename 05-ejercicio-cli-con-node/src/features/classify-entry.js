@@ -1,10 +1,10 @@
+import { EXEC_PERMISSION_MASK } from "../constants/file-types.js";
+
 const SUFFIX_BY_TYPE = {
   directory: "/",
   symlink: "@",
   other: "?",
 };
-
-const EXEC_PERMISSION_MASK = 0o111; // 0o111 is the octal representation of the execute permission bits for user, group, and others.
 
 export function classifyEntry(entry) {
   const isFile = entry.type === "file";
