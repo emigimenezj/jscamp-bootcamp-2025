@@ -1,8 +1,9 @@
+import { EXIT_CODES } from "../constants/exit-codes.js";
 import { AppError } from "./app-error.js";
 
 const SYSTEM_ERROR_FALLBACK = {
   code: "SYSTEM_ERROR",
-  exitCode: 3,
+  exitCode: EXIT_CODES.SYSTEM, // Aplicamos el exit_code de manera declarativa
   message: (path) => `Could not read the directory "${path}".`,
   hint: "Check the path and your filesystem permissions.",
 };
