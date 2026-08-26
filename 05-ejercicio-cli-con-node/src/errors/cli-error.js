@@ -1,3 +1,4 @@
+import { EXIT_CODES } from "../constants/exit-codes.js";
 import { AppError } from "./app-error.js";
 
 const CLI_ERROR_MESSAGES = Object.freeze({
@@ -13,7 +14,7 @@ const CLI_ERROR_MESSAGES = Object.freeze({
 class CliError extends AppError {
   constructor(message, options = {}) {
     super(message, {
-      exitCode: 2,
+      exitCode: EXIT_CODES.USAGE, // Aplicamos el exitCode de manera declarativa
       ...options,
     });
   }

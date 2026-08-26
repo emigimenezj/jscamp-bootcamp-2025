@@ -1,10 +1,4 @@
-const ANSI = {
-  reset: "\x1b[0m",
-  bold: "\x1b[1m",
-  red: "\x1b[31m",
-  yellow: "\x1b[33m",
-  gray: "\x1b[90m",
-};
+import { ANSI } from "../constants/ansi.js"; // Como lo usamos en diferentes sitios, usamos el import de un fichero en `constants`
 
 function colorize(value, ...styles) {
   return `${styles.join("")}${value}${ANSI.reset}`;

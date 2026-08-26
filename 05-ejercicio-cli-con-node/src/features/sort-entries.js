@@ -12,10 +12,7 @@ const COMPARATORS = {
 };
 
 export function sortEntries(entries, criterion = null) {
-  if (criterion === null) return entries.toSorted(directoriesFirst);
+  // Si no hay criterio, podemos devolver el orden original de readdir
+  if (criterion === null) return [...entries];
   return entries.toSorted(COMPARATORS[criterion]);
-}
-
-function directoriesFirst(left, right) {
-  return Number(right.type === "directory") - Number(left.type === "directory");
 }
