@@ -1,18 +1,11 @@
-const ANSI = {
-  reset: "\x1b[0m",
-  blue: "\x1b[34m",
-  cyan: "\x1b[36m",
-  green: "\x1b[32m",
-  gray: "\x1b[90m",
-};
+import { ANSI } from "../constants/ansi.js";
+import { EXEC_PERMISSION_MASK } from "../constants/file-types.js";
 
 const COLOR_BY_TYPE = {
   directory: ANSI.blue,
   symlink: ANSI.cyan,
   other: ANSI.gray,
 };
-
-const EXEC_PERMISSION_MASK = 0o111; // 0o111 is the octal representation of the execute permission bits for user, group, and others.
 
 export function colorizeEntry(entry) {
   const isFile = entry.type === "file";
