@@ -1,63 +1,21 @@
-<!-- Aquí puedes poner tus dudas del ejercicio -->
+# Dudas
 
-Dudas
+## Métodos estáticos en MVC
 
-- 1. ¿Por qué en la versión con clases de MVC se usan puros métodos estáticos?
+- En la versión con clases del patrón MVC, tanto el modelo como el controlador terminan usando casi exclusivamente métodos estáticos. ¿Qué ventaja aporta usar una clase en ese caso frente a exportar directamente un objeto con funciones, por ejemplo `{ get, set, clear }`? ¿Hay alguna diferencia conceptual o práctica importante? Por mi parte, si no se van a usar instancias de las clases y todo va a ser estático entonces la notación de clase es boilerplate innecesario, o al menos lo veo así en principio.
 
-¿No sería equivalente hacer algo como esto?:
+## Mapeo explícito vs. spread en actualizaciones
 
-```js
-const myClass = {
-  get: () => {},
-  set: () => {},
-  clear: () => {},
-};
-```
+- En el `JobModel`, para `PUT` mapeé explícitamente cada propiedad recibida, mientras que para `PATCH` reutilizo el objeto existente y aplico `...input` sobre él. ¿Es una buena práctica mantener esta diferencia? ¿Conviene evitar el spread de `input` en actualizaciones completas para controlar explícitamente qué propiedades pueden formar parte del recurso? Al menos mi experiencia en programación me enseñó por las buenas y por las malas que no controlar explícitamente lo que hacés puede conducir a desastre.
 
-- 2. Mapeo de propiedades 1 a 1 en vez de usar `...` (spread operator)
+## Qué tan estricta debería ser una API
 
-```js
-static update(id, input) {
-    const { titulo, empresa, ubicacion, descripcion } = input;
-    const { data, content } = input;
+- ¿Qué tan estricto debería ser un endpoint con datos que no espera o no utiliza? Por ejemplo, ¿conviene rechazar un `body` enviado en un `DELETE` o query params desconocidos en un `GET`, o normalmente se ignoran?
 
-    const index = jobs.findIndex(({ id: target }) => target === id);
+  Me genera dudas permitirlos porque un parámetro que hoy no significa nada podría adquirir significado en una versión futura de la API y cambiar silenciosamente el comportamiento de una request que antes era válida. ¿Esto es una preocupación razonable en el diseño de APIs?
 
-    if (index === -1) return null;
+## Middlewares
 
-    const job = {
-      id,
-      titulo,
-      empresa,
-      ubicacion,
-      descripcion,
-      data,
-      content,
-    };
+- Tomé la decisión de agregar middlewares propios para logging, manejo global de errores y validación de requests, aunque eso se sale un poco del alcance del ejercicio. ¿Es una buena separación de responsabilidades o estoy agregando complejidad innecesaria para este tipo de API?
 
-    jobs[index] = job;
-
-    return job;
-  }
-
-  static partialUpdate(id, input) {
-    const index = jobs.findIndex(({ id: target }) => target === id);
-
-    if (index === -1) return null;
-
-    const job = {
-      ...jobs[index],
-      ...input,
-      id,
-    };
-
-    jobs[index] = job;
-
-    return job;
-  }
-```
-
-- 3. ¿Debería ser un endpoint excesivamente restrictivo o no?
-     Por ejemplo en el caso del `DELETE` fallar si envía algún json en el body (no sería necesariO)
-     O también por ejemplo en el `GET` que reciba una propiedad que no hace nada.
-     (lo que me hace ruido de esto es que si se deja pasar entonces en el futuro al agregar una propiedad o funcionalidad que matchee con el mal uso del endpoint va a hacer que de la nada el comportamiento actualmente esperado cambie y eso es una porquería, en mi humilde opinión).
+- Además de estos casos, ¿cuáles dirían que son los usos más comunes y útiles de los middlewares en aplicaciones reales? Me interesan especialmente aquellos que suelen aportar bastante valor pero que a veces no se consideran al principio por desconocimiento.
