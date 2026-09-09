@@ -1,11 +1,24 @@
-import express from 'express'
-import { jobsRouter } from './routes/jobs.js'
+import express from "express";
+import { DEFAULTS } from "./config.js";
+import { middleware } from "./middlewares/cors.js";
 
-const PORT = 3000
-const app = express()
+import { jobsRouter } from "./routes/jobs.js";
 
-app.use('/jobs', jobsRouter)
+const app = express();
 
-app.listen(PORT, () => {
-  console.log(`Servidor levantado en http://localhost:${PORT}`)
-})
+app.use(middleware.cors);
+app.use(express.json());
+
+app.use("/jobs", jobsRouter);
+
+app.listen(DEFAULTS.PORT, () => {
+  console.log(`Servidor levantado en http://localhost:${DEFAULTS.PORT}`);
+});
+
+/*
+TODO:
+- Optimizar el código del Controller
+  - ¿Trabajar las validaciones a través de un middleware? (pensar)
+- Implementar un logger para registrar las peticiones y respuestas (improvisado)
+- 
+*/
