@@ -2,20 +2,19 @@ import jobs from "../jobs.json" with { type: "json" };
 
 export class JobModel {
   static getAll(search) {
-    const { text, title } = search;
-    const { level, technology } = search;
-    const { limit, offset } = search;
+    // Podemos simplificar la destructuración de search en una sola linea
+    const { text, title, level, technology, limit, offset } = search;
 
     const matches = {
       text: ({ titulo, descripcion }) =>
-        !text || compare(titulo, text) || compare(descripcion, text),
+        !text || includesText(titulo, text) || includesText(descripcion, text),
 
-      title: ({ titulo }) => !title || compare(titulo, title),
+      title: ({ titulo }) => !title || includesText(titulo, title),
 
-      level: ({ data: { nivel } }) => !level || compare.equal(nivel, level),
+      level: ({ data: { nivel } }) => !level || equalsText(nivel, level),
 
       technology: ({ data: { technology: stack } }) =>
-        !technology || stack.some((tech) => compare.equal(tech, technology)),
+        !technology || stack.some((tech) => equalsText(tech, technology)),
     };
 
     const byCriteria = (job) =>
@@ -118,16 +117,13 @@ function locate(id) {
   };
 }
 
-function compare(value, search) {
-  const left = value.toLowerCase();
-  const right = search.toLowerCase();
-
-  return left.includes(right);
+// tuviste una muy buena idea. En aplicaciones chicas/medianas implica una complejidad de código alta. Lo mejor es tener funciones que tengan claro su propósito.
+// true si value contiene search (ignora mayúsculas/minúsculas)
+function includesText(value, search) {
+  return value.toLowerCase().includes(search.toLowerCase());
 }
 
-compare.equal = function (value, search) {
-  const left = value.toLowerCase();
-  const right = search.toLowerCase();
-
-  return left === right;
-};
+// true si value es igual a search (ignora mayúsculas/minúsculas)
+function equalsText(value, search) {
+  return value.toLowerCase() === search.toLowerCase();
+}
