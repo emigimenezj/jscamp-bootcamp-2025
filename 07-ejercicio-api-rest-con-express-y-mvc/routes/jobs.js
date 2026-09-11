@@ -1,15 +1,15 @@
-import { Router } from 'express'
+import { Router } from "express";
+import { JobController } from "../controllers/jobs.js";
+import { jobValidation } from "../middlewares/validation/jobs.js";
 
-export const jobsRouter = Router()
+export const jobsRouter = Router();
 
-/* Aquí debe ir la lógica de tus rutas */
-/* Recuerda que en tus rutas debes usar los controladores */
-/* 
-Deberás implementar:
-- Obtener todos los jobs [GET]
-- Obtener un job por id [GET]
-- Crear un job [POST]
-- Actualizar un job por id [PUT]
-- Actualizar parcialmente un job por id [PATCH]
-- Eliminar un job por id [DELETE]
-*/
+jobsRouter.get("/", jobValidation.query, JobController.getAll);
+jobsRouter.get("/:id", JobController.getId);
+
+jobsRouter.post("/", jobValidation.create, JobController.create);
+
+jobsRouter.put("/:id", jobValidation.update, JobController.update);
+jobsRouter.patch("/:id", jobValidation.patch, JobController.partialUpdate);
+
+jobsRouter.delete("/:id", JobController.delete);

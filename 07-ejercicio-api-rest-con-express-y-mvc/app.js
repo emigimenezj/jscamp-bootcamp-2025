@@ -1,11 +1,20 @@
-import express from 'express'
-import { jobsRouter } from './routes/jobs.js'
+import express from "express";
+import { DEFAULTS } from "./config.js";
+import { middleware } from "./middlewares/cors.js";
+import { logger, error } from "./middlewares/logger.js";
 
-const PORT = 3000
-const app = express()
+import { jobsRouter } from "./routes/jobs.js";
 
-app.use('/jobs', jobsRouter)
+const app = express();
 
-app.listen(PORT, () => {
-  console.log(`Servidor levantado en http://localhost:${PORT}`)
-})
+app.use(logger);
+app.use(middleware.cors);
+app.use(express.json());
+
+app.use("/jobs", jobsRouter);
+
+app.use(error);
+
+app.listen(DEFAULTS.PORT, () => {
+  console.log(`Servidor levantado en http://localhost:${DEFAULTS.PORT}`);
+});
