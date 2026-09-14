@@ -199,7 +199,8 @@ form span {
   flex-shrink: 0;
 }
 
-form input[type="text"] {
+form input[type="text"],
+form input[type="search"] {
   flex: 1;
   background: transparent;
   border: none;
@@ -208,9 +209,11 @@ form input[type="text"] {
   padding: 0.75rem 0.5rem;
   font-size: 1rem;
   font-family: inherit;
+  appearance: none;
 }
 
-form input[type="text"]::placeholder {
+form input[type="text"]::placeholder,
+form input[type="search"]::placeholder {
   color: #64748b;
 }
 
