@@ -1,0 +1,15 @@
+/node_modules
+
+# PLAYWRIGHT
+playwright-report/
+test-results/
+
+# VSCODE
+.vscode/
+
+# ENV
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
