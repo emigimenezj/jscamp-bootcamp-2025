@@ -1,0 +1,56 @@
+name: 05 - CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+defaults:
+  run:
+    working-directory: 12-ejercicio-cicd
+
+jobs:
+  frontend-lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - run: pnpm lint:frontend
+
+  frontend-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - run: pnpm test:frontend
+
+  backend-lint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - run: pnpm lint:backend
+
+  backend-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - run: pnpm test:backend
+
+  frontend-build:
+    needs: [frontend-lint, frontend-test]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - run: pnpm build:frontend
+
+  backend-build:
+    needs: [backend-lint, backend-test]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup-pnpm-ci-cd
+      - run: pnpm build:backend
