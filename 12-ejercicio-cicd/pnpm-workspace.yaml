@@ -1,2 +1,6 @@
 packages:
-  - 'projects/*'
+  - "projects/*"
+
+overrides:
+  brace-expansion: 5.0.9
+  electron-to-chromium: 1.5.425
