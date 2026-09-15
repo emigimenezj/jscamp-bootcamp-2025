@@ -1,0 +1,48 @@
+name: 02 - Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      logging_level:
+        description: Logging level
+        required: true
+        default: info
+        type: string
+      environment:
+        description: Deployment environment
+        required: true
+        type: string
+      dry_run:
+        description: Run without applying changes
+        default: false
+        type: boolean
+      reason:
+        description: Reason for execution
+        default: Manual execution
+        type: string
+
+jobs:
+  manual:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Show inputs
+        env:
+          LOGGING_LEVEL: ${{ inputs.logging_level }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          echo "Logging level: $LOGGING_LEVEL"
+          echo "Environment: $ENVIRONMENT"
+          echo "Dry run: $DRY_RUN"
+          echo "Reason: $REASON"
+
+      - name: Deploy
+        if: ${{ !inputs.dry_run }}
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: echo "Deploying to $ENVIRONMENT"
+
+      - name: Dry run
+        if: ${{ inputs.dry_run }}
+        run: echo "Dry run enabled"
