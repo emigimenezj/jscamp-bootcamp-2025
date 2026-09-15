@@ -3,7 +3,8 @@ name: 03 - Schedule
 on:
   schedule:
     # Minuto (0), hora (9), día del mes (*), mes (*), día de la semana (1 = lunes).
-    - cron: "0 9 * * 1"
+    # - cron: "0 9 * * 1"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
