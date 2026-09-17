@@ -5,6 +5,7 @@ export const db = new Database("jobs.db");
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
 
+/* Pasamos esto al seed, tiene mas sentido que esté ahí
 db.exec(`
   CREATE TABLE IF NOT EXISTS jobs (
     id TEXT PRIMARY KEY,
@@ -32,3 +33,4 @@ db.exec(`
     FOREIGN KEY (job_id) REFERENCES jobs(id) ON DELETE CASCADE
   );
 `);
+*/
