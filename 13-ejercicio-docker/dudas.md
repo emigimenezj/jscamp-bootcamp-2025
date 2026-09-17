@@ -38,3 +38,5 @@ Luego hay cosas super raras como tener windows o MacOS instaladas dentro de un c
 A nivel de seguridad se que lo usan mucho para correr código no confiable dentro, si se rompe algo o hay algún ataque, se hace dentro del contenedor y no en tu propia máquina.
 
 Son casos poco habituales pero es un poco lo que se me ocurre.
+
+PD: Esta chica a venido a alguna MiduConf de años anteriores, trabaja en Microsoft y sube contenido de contenedores, docker y Kubernetes: https://www.youtube.com/@returngis/videos es muy buena explicando y alguna cosa interesante puedes buscar :)
