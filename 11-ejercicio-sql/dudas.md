@@ -11,3 +11,15 @@ Tengo dos dudas puntuales; en líneas generales, el resto creo que lo tengo bajo
 PD: ya que estaba agregué algunos tests reutilizando parte del código del ejercicio `08-testing-con-node-y-zod` para probar si todo funcionaba y también para ¡probar la persistencia! 🥳
 
 ¡Gracias! 😁
+
+---
+
+**Respuesta 1:**
+Buena pregunta, y la respuesta es que si, siempre debemos dejar la lógica de filtrado en SQL. La idea es que el modelo no tenga que preocuparse por el filtrado. Y por otro lado, siempre el motor de SQL hará el filtrado más rápido que nosotros en nuestro modelo en el lenguaje que usemos.
+
+**Respuesta 2:**
+Personalmente y a nivel de arquitectura (siempre el libro cambia según el lector), prefiero que el filtrado se haga en el modelo. El controlador no tiene que preocuparse por el las transformaciones de los datos. Si poneos la lógica en el controlador, si mañana cambiamos el modelo también tendríamos que cambiar el controlador, y es un anti patrón.
+
+**Respuesta 3:**
+
+Hicimos los cambios para que funcione, creo que es mejor verlo desde ahí :)
