@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { JobModel } from "../models/job";
-import type { Job, JobFilters, JobRow } from "../types";
+/* import type { Job, JobFilters, JobRow } from "../types"; */
+import type { JobFilters } from "../types";
 
 export class JobController {
   // GET /jobs
@@ -10,8 +11,15 @@ export class JobController {
     res: Response,
   ): Promise<void> {
     const { tech, modality, level } = req.query;
+    /* La transformación de filas la hace ahora el modelo, que devuelve el contrato Job. Es quien corresponde hacerlo
     const rows = await JobModel.getAll({ tech, modality, level });
     const jobs = rows.map(toJob);
+
+    res.json(jobs);
+    */
+
+    // El modelo ya devuelve objetos Job listos para la respuesta
+    const jobs = await JobModel.getAll({ tech, modality, level });
 
     res.json(jobs);
   }
@@ -23,6 +31,7 @@ export class JobController {
     res: Response,
   ): Promise<void> {
     const { id } = req.params;
+    /*
     const row = await JobModel.getById(id);
 
     if (!row) {
@@ -31,6 +40,16 @@ export class JobController {
     }
 
     res.json(toJob(row));
+    */
+
+    const job = await JobModel.getById(id);
+
+    if (!job) {
+      res.status(404).json({ message: "Job not found" });
+      return;
+    }
+
+    res.json(job);
   }
 
   // POST /jobs
@@ -46,6 +65,7 @@ export class JobController {
     res: Response,
   ): Promise<void> {
     const { id } = req.params;
+    /*
     const row = await JobModel.update(id, req.body);
 
     if (!row) {
@@ -54,6 +74,16 @@ export class JobController {
     }
 
     res.json(toJob(row));
+    */
+
+    const updatedJob = await JobModel.update(id, req.body);
+
+    if (!updatedJob) {
+      res.status(404).json({ message: "Job not found" });
+      return;
+    }
+
+    res.json(updatedJob);
   }
 
   // DELETE /jobs/:id
@@ -73,6 +103,7 @@ export class JobController {
   }
 }
 
+/*
 function toJob(row: JobRow): Job {
   const { modality, level, technologies, content, ...job } = row;
 
@@ -88,3 +119,4 @@ function toJob(row: JobRow): Job {
     }),
   };
 }
+*/
