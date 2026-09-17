@@ -6,11 +6,20 @@ type Success = {
   jobs: Job[];
   count: number;
 };
+/* // Código anterior: "Error" pisaba (shadowing) el tipo global Error de TypeScript
 type Error = {
   success: false;
   error: string;
 };
 export type SearchResult = Success | Error;
+*/
+
+// Renombrado a SearchFailure para no hacer shadowing del tipo global Error
+type SearchFailure = {
+  success: false;
+  error: string;
+};
+export type SearchResult = Success | SearchFailure;
 
 // Función que devuelve SearchResult
 export function safeSearch(jobs: Job[], searchTerm: string): SearchResult {
