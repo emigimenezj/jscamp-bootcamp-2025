@@ -13,3 +13,17 @@ Así que nada, espero que se vengan más cosas en otras áreas (Rust por ejemplo
 ¡Nos vemos en el siguiente curso, en alguna hackathon, en algún desarrollo colectivo, dando vueltas por la comunidad o por el shat de Twitch!
 
 ¡Saludos! 👋
+
+---
+
+Fue un placer haber pasado este tiempo contigo corrigiendo y viendo los trabajazos que entregabas :) Estoy muy orgulloso! Y antes que nada felicitarte, por haber terminado el bootcamp y por siempre estar abierto a preguntas, eso lo valoro muchísimo (habían unas que me hacían pensar 😅).
+
+Con este ejercicio (que lo voy a dejar como completado) ya podrás tener el certificado y las cartas de recomendación.
+
+Espero poder volver a coincidir! Siempre voy a estar para lo que necesites por más que termine el Bootcamp, fuiste un alumno sobresaliente y lo voy a recordar.
+
+Y por lo de Claud y Rust, lo vamos a tener en cuenta! Muchas veces hemos querido subir contenido sobre eso y la verdad es que no nos ha visto mucha gente, por eso hemos ido por otros caminos que llevaran a más alcance. Pero en cursos como estos que cubren muchos temas, lo vamos a pensar para poder agregarlo. Gracias por decirnos! Lo valoro mucho, así se que podemos cambiar jaja
+
+Dicho esto, gracias. Los caminos largos requieren constancia y dedicación (algo que siempre le digo a los chicos) y tuviste ambas, llegaste en tiempo y forma a un Bootcamp con mucho contenido y ejercicios a entregar.
+
+Saludos y a seguir aprendiendo con las mismas ganas que tuviste en este proceso! Vas a llegar muy lejos
