@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 const locator = {
   job: {
@@ -56,6 +56,17 @@ const check = {
     },
   },
 
+  // Usar un locator negativo con toHaveCount(0) reintenta automáticamente hasta que la UI refleja el filtro, así que no hay necesidad de expect.poll + evaluateAll ni de waitForResponse manual.
+  jobs: {
+    async allMatch(page, attribute, value) {
+      await expect(
+        page.locator(`[${attribute}]:not([${attribute}="${value}"])`),
+      ).toHaveCount(0);
+    },
+  },
+
+  /* Implementación anterior, reemplazada por allMatch: duplicaba el mecanismo
+     de reintento que Playwright ya provee con sus aserciones auto-esperadas.
   jobs: {
     async attribute(results, attribute, expected) {
       // Comprueba que todos los resultados visibles coincidan con el filtro aplicado.
@@ -74,6 +85,7 @@ const check = {
         .toBe(true);
     },
   },
+  */
 
   search: {
     async results(page, text) {
@@ -135,7 +147,42 @@ test.describe("Flujo de aplicación", () => {
 });
 
 test.describe("Filtros de empleos", () => {
-  test("muestra únicamente empleos remotos al filtrar por ubicación", async ({
+  // Podemos parametrizar los filtros para no duplicar el mismo test cambiando solo los datos
+  const filtros = [
+    {
+      name: "ubicación",
+      placeholder: "Ubicación",
+      label: "Remoto",
+      attribute: "data-modalidad",
+      value: "remoto",
+    },
+    {
+      name: "nivel",
+      placeholder: "Nivel de experiencia",
+      label: "Senior",
+      attribute: "data-nivel",
+      value: "senior",
+    },
+  ];
+
+  for (const filtro of filtros) {
+    test(`muestra únicamente empleos correctos al filtrar por ${filtro.name}`, async ({
+      page,
+    }) => {
+      await page.goto("/search");
+
+      await locator.job
+        .filter(page, filtro.placeholder)
+        .selectOption({ label: filtro.label });
+
+      // Con esto confirmamos que la búsqueda filtrada devolvió al menos un resultado
+      await expect(locator.job.results(page).first()).toBeVisible();
+
+      await check.jobs.allMatch(page, filtro.attribute, filtro.value);
+    });
+  }
+
+  /* test("muestra únicamente empleos remotos al filtrar por ubicación", async ({
     page,
   }) => {
     await page.goto("/search");
@@ -182,6 +229,7 @@ test.describe("Filtros de empleos", () => {
     const results = locator.job.results(page);
     await check.jobs.attribute(results, "data-nivel", "senior");
   });
+  */
 });
 
 test.describe("Paginación de empleos", () => {
